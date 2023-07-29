@@ -1,0 +1,111 @@
+2bd7685cc093df426ad2f2f6e558f6a19e415510
+
+
+
+
+
+
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.4.0.905</version>
+            </plugin>
+       
+
+
+
+mvn sonar:sonar -Dsonar.host.url=http://43.207.201.53:9000/
+  -Dsonar.login=2bd7685cc093df426ad2f2f6e558f6a19e415510
+
+
+
+
+
+
+
+
+
+
+nexus manuall deploy 
+in pom.xml
+
+<distributionManagement>
+   <Repository>
+      <id>nexus</id>
+      <name>release</name>
+      <url>http://18.181.146.234:8081/repository/maven-releases/</url>
+   </Repository>
+   <snapshotRepository>
+      <id>nexus</id>
+      <name>snapshots</name>
+      <url>http://18.181.146.234:8081/repository/maven-snapshots/</url>
+   </snapshotRepository>
+</distributionManagement>
+
+
+
+
+in settings.xml in maven conf folder
+<server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+<server>
+      <id>maven-snapshots</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+
+<profile>
+<id>repository</id>
+ <repositories>
+   <repository>
+     <id>maven-releases</id>
+     <url>http://35.77.22.246:8081/repository/maven-releases/</url>
+   </repository>
+ </repositories>
+</profile>
+<profile>
+<id>:</id>
+ <repositories>
+   <repository>
+     <id>maven-snapshots</id>
+     <url>http://35.77.22.246:8081/repository/maven-snapshots/</url>
+   </repository>
+ </repositories>
+</profile>
+
+
+
+curl -v -u admin:admin123 --upload-file pom.xml http://35.77.22.246:8081/repository/maven-releases/org/foo/1.0/foo-1.0.pom
+
+<project ...>
+
+  ...
+
+  <repositories>
+    <repository>
+      <id>maven-group</id>
+      <url>http://http://18.181.146.234/:8081/repository/maven-group/</url>
+    </repository>
+  </repositories>
+</project>
+And if you want also to publish your project, add:
+
+<project ...>
+
+  ...
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://http://18.181.146.234/:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-releases</id>
+      <url>http://http://18.181.146.234/:8081/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
+</project>
