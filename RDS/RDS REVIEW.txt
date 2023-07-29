@@ -1,0 +1,509 @@
+1. 3306
+2. Clustering
+3. PaaS
+4. R/W
+5. IOPS - in/out per secs
+6. replica - sync
+7. clone - non sync
+8. primary/replica - down
+9. clone - TS - Testing + Live Deploy
+10. CP - Credentials and end points 
+11. Primary and replica
+12. subnet grouping
+13. yum? - mysql? - linux env? 
+    ansible2 - yum EPEL
+    yum list available | grep ...
+14. apt
+15. yum or rpm
+16. mysql - {ssd/iops - 20 to 16tb, 100 to 16tb)
+17. Amazon Aurora - {1 to 15, CPU Utiliza)
+18. End point - h
+05/03/2022:
+========================================================================
+AWS - RDS - Relational Database service / system    -   PaaS
+============================================================
+1. DBMS - ? DATA HANDLING
+SECURITY DB
+
+read-90% and write -10%
+
+2. 
+STRUCTURED       - RDS - ORACLE/MYSQL  - SQL - SCHEMA - 90%
+UNSTRUCTURED     - VARIUOS FORMATTED DATA UPLOAD AND ANALYSIS - REPORT ETL - REDSHIFT
+SEMI-STRUCTURED  - NOSQL / TABLE CREATION AND INSERTION - READ - DYNAMODB
+
+
+3. Subnet grouping - Backup and Recovery
+
+
+4. Practical: 
+
+=> MYSQL 
+
+5. Replica: sync with primary  
+Common properties between primary and replica:
+
+
+End point:
+Primary End Point: greensprimary.caozhdj6ckvp.ap-south-1.rds.amazonaws.com
+Replica End Point: greensreplica.caozhdj6ckvp.ap-south-1.rds.amazonaws.com
+                   greensreplica.caozhdj6ckvp.ap-south-1.rds.amazonaws.com
+
+Credentials:
+Primary Credentials : admin and admin123
+Secondary Credentials : admin and admin123
+
+
+1. if(primary db is up and  running) then  
+replica= idle, primary  to replica write 
+
+2. if(primary  goes down) then 
+replica= End point and credentials = Auto-promote as a primary and respond users
+
+3. if(primary is up after 5 mins) then 
+replica=? 
+
+
+
+6. Snapshot : db frequent backup   - image 
+Application criticality 
+if(primary and replica == down) then
+use an latest snapshot(image) - make it as a RDS instance - end point - ec2 + catalog
+
+
+7. clone: active data - non sync
+1. PM - dev/test/prod/dr
+2. Post incident occurences -  clone + Testing = RCA = FIX
+
+
+
+
+RDS - Relational Database Service
+Subnetgroup? - primary and replica  
+mysql port no = ? 3306
+operations =? read and write 
+End point? = Connecting point for the  db
+replica and primary  = sync or non sync? 
+clone and primary = non sync
+snapshot and primary = export S3  = Restore and  make as a instance
+
+general-public-licence=? aws license except oracle
+
+role - primary replica instance
+
+common properties = credentials / end points
+
+Aut-promote=? When primary down
+
+prim and repli down = snapshot 
+
+business continuity
+
+
+
+amazon aurora  and mysql
+clustering         same end point
+fast               normal
+
+
+mysql Autoscalling????
+Storage capacity:
+general purpose ssd   10GB TO 16TB
+provisioned IOPS     100GB TO 16TB   
+
+
+Amazon Aurora:
+writer -1
+readers - default ro / 1 to 15  - db autoscalling
+
+
+clone? 
+ITSM -
+
+
+DBMS - RDS AND DYNAMODB - PaaS
+------------------------------
+rds - relational database services
+
+1. DBMS - Store / retrival
+2. Types - structured - / unstructured  / semi-structured 
+3. Ops - read - 90% / write -10%
+
+4. SUBNETGROUP - Enables multi-azs deploy of our db - primary / replica
+ 
+5. Primary db
+greensprimary.cjrcrgspbpyh.ap-south-1.rds.amazonaws.com
+greensreplica.cjrcrgspbpyh.ap-south-1.rds.amazonaws.com
+greensreplica.cjrcrgspbpyh.ap-south-1.rds.amazonaws.com
+ 
+6. replica:
+--> have a sync with primary
+
+-> If(primary is active and running) then
+   Primary - read / write
+   replica - sync - write from primary to replica
+-> If(Primary goes down) then
+   Primary - dead mode
+   Replica would auto-promote as a "Primary" - read / write
+Auto-promote:
+1. End points
+2. Credentials 
+
+-> If(primary resumed back and running) then
+   replica + Primary - sync
+   primary - read / write
+   replica - idle - 
+
+
+7. Snapshot - image - restore
+if (primary and replica == down) then
+snapshot - db instance - end point - live catalog - bcp 
+
+
+8. Clone - Primary - non sync 
+1. project : dev test prod dr
+2. RCA - Post Incident occurences
+
+
+
+Dynamodb: IOPS - 
+-----------
+table - dynamic
+indexing
+read - 
+
+Library
+ 
+
+Database Engineering - RDS and DynamoDB:
+---------------------------------------
+1. DBMS - Store / Retrieval
+2. DBMS - Structured - RDS / Semi-Structured - NoSQL / Unstructured - Big Data / DWH-ETL
+3. DBMS - Write - 10% / Read - 90%
+4. SUBNETGROUP - Multi-AZs deployment of DB
+5. RDS - THEORY
+
+6. PRACTICAL:
+Auto-Promotion:
+===============
+Primary End Point: greensprimary.c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+Replica End Point: greensreplica.c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+                   greensreplica.c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+
+Credentials
+Both primary and Replica's credentials are the same....
+
+Scenario: 
+If (Primary is up and running) then
+    primary performs - Read / Write 
+    and
+    replica performs nothing
+    and 
+    primary writes (sync) onto replica
+
+If (Primary went down) then
+    replica would Auto-Promote as a Primary 
+    and performs read and write
+
+If (Primary is up and running - recovery) then
+   Auto-Sync from replica to primary
+
+
+Snapshot: Image - Export to S3 bucket .... Restore back to RDS console
+Base: Application Criticality
+
+If (Both Primary and Replica went down) then
+   Restore the latest snapshot from s3 bucket ...convert as a RDS instance
+   End Point - Live Catalog - Business continuity possible 
+   Restore and reuse
+
+
+Scnenario:
+
+Amazon Aurora:  100gb and 100gb ram
+Clustering concept  - Readers / Writers 
+Readers - Can Enabled and multiple 
+Writers - Disabled and single
+
+Writer End Point: amazonaurora.cluster-c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+Readers Endpoint: amazonaurora.cluster-ro-c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+                  amazonaurora.cluster-ro1-c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+                  amazonaurora.cluster-ro15-c0ph2avdc5tm.ap-south-1.rds.amazonaws.com
+
+
+DynamoDB - Semi-Structured
+NoSQL
+Semi_structured
+Library
+indexing 
+read purpose
+
+
+
+
+DB Cloning: - Non Sync - Active DB
+1. Same db - if you want to replicate - Multiple envs
+2. post incident occrences - clone - catalog with test env - RCA - Fix 
+3. change request management - production  
+
+
+
+
+
+
+
+
+
+
+
+
+
+RDS - Relational Database service - DB ENG - PaaS:
+==================================================
+
+1. What is the need of DB? - System/Application data handling
+
+2. Operations perform in DBMS - Read / Write {Read - High and Write - Low}
+
+3. Types of DBMS
+	Structured      - schema based store and retrieval - SQL - Oracle, mysql, postgresql
+	Semi-Structured - Dynamodb, Library system, read purpose ... IOPS - Input and output per seconds 
+	Unstructured - adopt all datas, ETL, DWH, Redshift - Analytical 
+
+4. RDS and DYNAMODB  
+PUBLIC SUBNET (WEBAPP) - AUTHENTICATION - PRIVATE SUBNET (APPSER + DB) - Frequent update to DB
+
+subnetgroup - multi-az's deployment of our DB
+
+
+5. Practicle: mysql - t2.micro
+mysql db - is there any autoscalling feature available - yes - storage capacity
+- gp ssd / provisioned IOPS
+Port Number : 3306
+
+Encryption Disabled - t2.micro
+
+DB Backup - snapshot - export to s3 - restore from s3 when required 
+
+DB should not run as a instance
+
+
+[root@ip-172-31-3-77 ~]# mysql
+-bash: mysql: command not found
+
+[root@ip-172-31-3-77 ~]# mysql
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
+
+
+
+Primary End Point : greensprimary.c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+
+How to catalog mysql with EC2 instance?
+[root@ip-172-31-3-77 ~]# mysql -h greensprimary.c4mawhcit9vt.ap-south-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password:admin123
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 17
+Server version: 8.0.25 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]>
+
+
+Replica: BCP  
+primary - credentials (admin and admin123)
+Sync
+Auto-promote as a primary {credentials
+
+Primary End Point : greensprimary.c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+Replica End Point : greensreplica.c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+                    greensreplica.c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+
+End user connection always with Primary 
+Active / Passive 
+
+Primary - Read / write 
+Replica - Write from primary to replica
+when primary goes down 
+after auto-promotion - instance - read / write 
+
+
+
+Snapshot: Image backup
+Scenario: when both primary / Replica goes down 
+S3 - Image - restore from S3 to RDS - Make it as a DB INSTANCE - Catalog with live server 
+
+
+Amazon Aurora:
+Read - default r0...from r1 to r15 end points 
+write - single end 
+
+
+
+DB Clone: 
+Active copy 
+non-sync 
+
+1. DEV / TEST / PROD / DR  
+2. TroubleShooting - db hang - appliction performance low - customer impact
+post occurences - we can take a clone copy - 
+clone db catalog with test env - RCA - Fix 
+same fix can be imlpemented onto live during non-business hour...
+
+
+greensaurora.cluster-c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+greensaurora.cluster-ro-c4mawhcit9vt.ap-south-1.rds.amazonaws.com   
+greensaurora.cluster-r1-c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+greensaurora.cluster-r15-c4mawhcit9vt.ap-south-1.rds.amazonaws.com
+
+
+
+RDS & DYNAMODB REVIEWS:
+=======================
+
+1. Database Typesroup
+structured
+unstructured
+semi-structured
+
+
+2. How to enable Multi-AZ's Replication?
+subnetgrouping
+subnet - 3
+az's   - 3
+
+GUI - Reflect - a and b
+
+
+3. What is RDS instance role? is this recommended process to run the db as a instance?
+RDS running without a backup
+No, Primary and Replica
+
+
+4. How to Enable master and replica in RDS MySql?
+subnetgrouping
+
+
+5. What are the parameters are common to both Master and replica DB?
+end point 
+credentials
+
+
+6. How the Auto-Master promotion will take place?
+replica will become a master
+end point and credentials
+
+
+7. What are the operations performs in Master and replica?
+master - read and write
+replica - read
+
+
+8. Why can't we keep both Master and Replica in the same Availability Zone?
+Backup and recovery
+Business continuity plan
+"High Availabilty"
+
+
+9. What is the port number for MySQL and Amazon Aurora?
+3306
+
+
+10. What is Snapshot? Where we apply the same and on wich situation we use the snapshot?
+- dormant data or image 
+- we store in s3
+- When both primary and replica went down - we ca make it as a active data(db) + prod en
+- rollback or rebuilt
+- daily basis we take an snapshot
+
+
+11. Is there any Autoscalling available in mysql? if yes, please highlight the same
+Storage Capacity:
+Volume types: SSD and IOPS
+SSD 20GB
+IOPS 100GB
+
+Enable autoscalling 1000gb
+
+
+12. What is meant by Auto-minor version upgrade? 
+auto-version upgrade
+
+
+13. In which RDS DB provision use the Clustering? and what is clustering? 
+why is it essential?
+
+- amazon aurora
+- Group of end points {reader (high) and writer}
+
+
+14. What is clone? where we apply this in real-time?
+- Primary - Non sync
+- Active
+- Trouble shooting
+
+
+15. What is Replica? Where we apply the same?P
+- Primary - sync
+- BCP
+
+
+16. How could we restore snapshot from s3? will it become a db instance? 
+possible to reuse the same?
+
+-- dormant data to db active instance
+-- yes
+-- yes
+
+17. Is Amazon RDS IaaS or PaaS?
+PaaS
+
+
+18. Is Oracle an Licensed rds db? then what kind of license it requires?
+Licensed
+sun microsystem
+
+
+19. Amazon Aurora Autoscalling?
+
+condition - cpu utili
+reader - 1 to 15
+
+
+
+20. What is the general license given for other db creation and access?
+
+
+21. Why is only 2 AZ's alone reflecting in the DB creations?
+cost 
+
+
+22. In which subnet we keep DB and what is the reason? 
+private subnet
+Security reason
+
+
+23. What is DynamoDB? in which case we use this in real-time?
+
+
+24. What is the major difference b/w RDS and DYNAMODB?
+
+
+25. What is schema? List out the Schemas available and brief?
+schema - set of protocol - 
+types - Physical and logical 
+
+Data structure - Tables , Views, Integrity constraints
+
+
+26. What is Integrity Constraints? Give example?
+primary key
+acc no is not null
+
+27. What is Primary Key? Give Example?
+acc no
+
+28. What is Foriegn key? give example?
+Mobile number

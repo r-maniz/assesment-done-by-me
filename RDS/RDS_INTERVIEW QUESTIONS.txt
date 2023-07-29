@@ -1,0 +1,13 @@
+Amazon RDS Interview Questions
+1) What is Amazon RDS?
+2) What is an RDS instance?
+3) List the database engines supported by Amazon RDS?
+4) Enlist some features of Amazon RDS?
+5) What is a DB Instance in Amazon RDS?
+6) What is the RDS interface?
+7) List DB Storages supported by Amazon RDS?
+8) What is Amazon Aurora?
+9) List some Amazon rds alternative?
+10) What is the AWS RDS cluster?
+11) Is Amazon RDS IaaS or PaaS?
+12) List Backup types supported by Amazon RDS?

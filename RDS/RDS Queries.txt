@@ -1,0 +1,39 @@
+create database authours;
+
+show databases;
+
+describe databases;
+
+use authours;
+
+create table authour (id int,name varchar(25),email varchar (26));
+
+insert into authour (id,name,email) values('111',"Karthik Raja","awskarthik7@gmail.com");
+insert into authour (id,name,email) values('222',"Damodaran","Damokrishnan@gmail.com");
+insert into authour (id,name,email) values('333',"Mohan Krishna","trmohan79@gmail.com");
+
+select * from authour;
+
+describe tables;
+select * from users where id='333';
+
+
+alter table authour rename users;
+select * from users;
+alter table users add column address varchar(100);
+
+update users set id='777' where id='111';
+delete from users where id='777';
+
+create database new;
+show databases;
+drop database new;
+
+www.w3school.com
+
+DDL - DATA DEFINITION LANUGAGE
+CREATE; ALTER; DROP - DROP TABLE USERS; DROP DATABASE AUTHOURS;
+
+
+DML - DATA MANIPULATION LANGUAGE
+INSERT; SELECT; UPDATE; DELETE  

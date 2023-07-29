@@ -1,0 +1,83 @@
+sonartoken 2268a4d5879062dc2eba0cc7e2296a27d002c597
+
+
+withSonarQubeEnv(installationName:'sonarqube8.9', credentialsId: 'sonarjenk') {
+    
+}
+
+
+
+
+
+nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/newapp.war', type: 'war']], credentialsId: 'nexusjenk', groupId: 'in.javahome', nexusUrl: '13.114.107.204:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'newapp', version: '0.0.5'
+
+
+
+
+
+
+
+full pipeline script till nexus next install tomcat
+
+pipeline{
+    
+agent any
+    
+tools{
+
+        maven 'maven3.9'
+   
+ }
+   
+ stages{
+ 
+       stage('checkout'){
+     
+       steps{
+     
+       git 'https://github.com/r-maniz/my-app.git'
+          
+  }
+     
+   }
+     
+     stage('mvnbuild'){
+    
+        steps{
+     
+       sh 'mvn clean package'
+         
+   sh 'mv target/myweb*.war target/newapp.war'
+   
+         }
+    
+    }
+   
+     stage('sonar'){
+    
+        steps{
+     
+         withSonarQubeEnv(installationName:'sonarqube8.9', credentialsId: 'sonarjenk') {
+
+                 sh 'mvn sonar:sonar'    
+               
+}
+            
+}
+ 
+  
+     }
+        
+stage('nexus'){
+          
+  steps{
+              
+ nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/newapp.war', type: 'war']], credentialsId: 'nexusjenk', groupId: 'in.javahome', nexusUrl: '13.114.107.204:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'newapp', version: '0.0.5'
+       
+     }
+ 
+       }
+
+    }
+
+}
